@@ -12,5 +12,10 @@ namespace WWebApi.Models
         public double Temperature { get; set; }
 
         public double Humidity { get; set; }
+
+        // Navigation
+        public Guid SensorId { get; set; }
+
+        public virtual Sensor? Sensor { get; set; }
     }
 }

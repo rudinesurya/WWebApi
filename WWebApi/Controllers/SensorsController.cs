@@ -12,14 +12,14 @@ namespace WWebApi.Controllers
         private readonly ILogger<SensorsController> Logger;
         private readonly ISensorService SensorService;
 
-        public SensorsController(ILogger<SensorsController> logger, 
+        public SensorsController(ILogger<SensorsController> logger,
                                     ISensorService sensorService)
         {
             Logger = logger;
             SensorService = sensorService;
         }
 
-        [HttpGet(Name = "GetSensors")]
+        [HttpGet]
         public async Task<IActionResult> Get([FromQuery] IEnumerable<string>? sensorNames, [FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
         {
             var sensors = SensorService.GetSensors();
@@ -55,10 +55,10 @@ namespace WWebApi.Controllers
                 });
             }
 
-            return Ok(sensors.ToListAsync());
+            return Ok(await sensors.ToListAsync());
         }
 
-        [HttpPost(Name = "AddSensor")]
+        [HttpPost]
         public async Task<IActionResult> Add([FromBody] Sensor sensor)
         {
             if (sensor.Id == default)

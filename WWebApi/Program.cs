@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using WWebApi.Data;
 using WWebApi.Services;
@@ -10,6 +9,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=WWebApi.db"));
 
 builder.Services.AddScoped<ISensorService, SensorService>();
+builder.Services.AddScoped<IWeatherDataService, WeatherDataService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WWebApi.Models
 {
@@ -17,7 +18,7 @@ namespace WWebApi.Models
         {
             get
             {
-                return WeatherData != null && WeatherData.Count() > 0 ? WeatherData.Average(w => w.Temperature) : 0;
+                return WeatherData.Count() > 0 ? WeatherData.Average(w => w.Temperature) : 0;
             }
         }
 
@@ -25,11 +26,16 @@ namespace WWebApi.Models
         {
             get
             {
-                return WeatherData != null && WeatherData.Count() > 0 ? WeatherData.Average(w => w.Humidity) : 0;
+                return WeatherData.Count() > 0 ? WeatherData.Average(w => w.Humidity) : 0;
             }
         }
 
         // Navigation
-        public IEnumerable<WeatherData>? WeatherData { get; set; }
+        public virtual IEnumerable<WeatherData> WeatherData { get; set; }
+
+        public Sensor()
+        {
+            WeatherData = new Collection<WeatherData>();
+        }
     }
 }

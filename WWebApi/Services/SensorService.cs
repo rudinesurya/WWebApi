@@ -25,6 +25,12 @@ namespace WWebApi.Services
 
         public async Task<Sensor> AddSensorAsync(Sensor sensor)
         {
+            var duplicate = await DbContext.Sensors.FirstOrDefaultAsync(s => s.Name == sensor.Name);
+            if (duplicate != null)
+            {
+                throw new ArgumentException();
+            }
+
             await DbContext.Sensors.AddAsync(sensor);
             await DbContext.SaveChangesAsync();
             return sensor;
