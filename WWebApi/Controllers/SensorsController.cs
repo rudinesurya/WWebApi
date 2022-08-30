@@ -71,7 +71,14 @@ namespace WWebApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            await SensorService.AddSensorAsync(sensor);
+            try
+            {
+                await SensorService.AddSensorAsync(sensor);
+            }
+            catch (ArgumentException)
+            {
+                return BadRequest($"Sensor Name: {sensor.Name} already exist");
+            }
 
             return CreatedAtAction(nameof(Get), new { id = sensor.Id }, sensor);
         }

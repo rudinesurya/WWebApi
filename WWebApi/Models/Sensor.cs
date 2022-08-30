@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WWebApi.Models
@@ -6,12 +7,19 @@ namespace WWebApi.Models
     [Table("Sensors")]
     public class Sensor
     {
+        [Key]
         public Guid Id { get; set; }
 
+        [Required]
+        [MaxLength(20)]
         public string Name { get; set; }
 
+        [Required]
+        [MaxLength(20)]
         public string Country { get; set; }
 
+        [Required]
+        [MaxLength(20)]
         public string City { get; set; }
 
         public double AverageTemperature

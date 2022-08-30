@@ -36,7 +36,14 @@ namespace WWebApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            await WeatherDataService.AddWeatherDataAsync(weatherData);
+            try
+            {
+                await WeatherDataService.AddWeatherDataAsync(weatherData);
+            }
+            catch (ArgumentException)
+            {
+                return BadRequest($"WeatherData's sensorId is invalid");
+            }
 
             return CreatedAtAction(nameof(Get), new { id = weatherData.Id }, weatherData);
         }
