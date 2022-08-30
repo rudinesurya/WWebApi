@@ -1,12 +1,12 @@
-using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WWebApi.Models;
 using WWebApi.Services;
 
 namespace WWebApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class SensorsController : ControllerBase
     {
         private readonly ILogger<SensorsController> Logger;
@@ -20,22 +20,42 @@ namespace WWebApi.Controllers
         }
 
         [HttpGet(Name = "GetSensors")]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromQuery] IEnumerable<string>? sensorNames, [FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
         {
-            return Ok(SensorService.GetSensorsAsync());
-        }
-
-        [HttpGet("{key}", Name = "GetSensorById")]
-        public async Task<IActionResult> GetSensorById([FromRoute] Guid key)
-        {
-            var sensor = SensorService.GetSensorByIdAsync(key);
-
-            if (sensor == null)
+            var sensors = SensorService.GetSensors();
+            
+            // Set the query to point to specific sensors. Default will get all sensors.
+            if (sensorNames != null && sensorNames.Count() > 0)
             {
-                return NotFound();
+                sensors = sensors.Where(s => sensorNames.Contains(s.Name));
             }
 
-            return Ok(sensor);
+            // Check if both the startDate and endDate have been set.
+            // Default will return the latest data
+            if (startDate != null && endDate != null)
+            {
+                sensors = sensors.Select(s => new Sensor()
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Country = s.Country,
+                    City = s.City,
+                    WeatherData = s.WeatherData.Where(wd => wd.DateTime >= startDate! && wd.DateTime <= endDate!)
+                });
+            }
+            else
+            {
+                sensors = sensors.Select(s => new Sensor()
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Country = s.Country,
+                    City = s.City,
+                    WeatherData = s.WeatherData.OrderByDescending(wd => wd.DateTime).Take(1)
+                });
+            }
+
+            return Ok(sensors.ToListAsync());
         }
 
         [HttpPost(Name = "AddSensor")]

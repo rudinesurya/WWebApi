@@ -7,9 +7,7 @@ namespace WWebApi.Services
 {
     public interface ISensorService
     {
-        IQueryable<Sensor> GetSensorsAsync();
-
-        IQueryable<Sensor> GetSensorByIdAsync(Guid id);
+        IQueryable<Sensor> GetSensors();
 
         Task<Sensor> AddSensorAsync(Sensor sensor);
     }
@@ -23,14 +21,13 @@ namespace WWebApi.Services
             DbContext = context;
         }
 
-        public IQueryable<Sensor> GetSensorsAsync() => DbContext.Sensors.Include(s => s.WeatherData);
+        public IQueryable<Sensor> GetSensors() => DbContext.Sensors.Include(s => s.WeatherData);
 
-        public IQueryable<Sensor> GetSensorByIdAsync(Guid key) => DbContext.Sensors.Where(s => s.Id == key)
-            .Include(s => s.WeatherData);
-
-        public Task<Sensor> AddSensorAsync(Sensor sensor)
+        public async Task<Sensor> AddSensorAsync(Sensor sensor)
         {
-            throw new NotImplementedException();
+            await DbContext.Sensors.AddAsync(sensor);
+            await DbContext.SaveChangesAsync();
+            return sensor;
         }
     }
 }

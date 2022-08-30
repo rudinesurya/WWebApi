@@ -17,7 +17,7 @@ namespace WWebApi.Models
         {
             get
             {
-                return WeatherData != null ? WeatherData.Average(w => w.Temperature) : 0;
+                return WeatherData != null && WeatherData.Count() > 0 ? WeatherData.Average(w => w.Temperature) : 0;
             }
         }
 
@@ -25,11 +25,11 @@ namespace WWebApi.Models
         {
             get
             {
-                return WeatherData != null ? WeatherData.Average(w => w.Humidity) : 0;
+                return WeatherData != null && WeatherData.Count() > 0 ? WeatherData.Average(w => w.Humidity) : 0;
             }
         }
 
         // Navigation
-        public List<WeatherData>? WeatherData { get; set; }
+        public IEnumerable<WeatherData>? WeatherData { get; set; }
     }
 }
