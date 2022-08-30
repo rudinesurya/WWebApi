@@ -10,22 +10,19 @@ namespace WWebApi.Controllers
     public class WeatherDataController : ControllerBase
     {
         private readonly ILogger<WeatherDataController> Logger;
-        private readonly ISensorService SensorService;
         private readonly IWeatherDataService WeatherDataService;
 
         public WeatherDataController(ILogger<WeatherDataController> logger,
-                                    ISensorService sensorService,
                                     IWeatherDataService weatherDataService)
         {
             Logger = logger;
-            SensorService = sensorService;
             WeatherDataService = weatherDataService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            return Ok(await WeatherDataService.GetWeatherData().ToListAsync());
+            return Ok(WeatherDataService.GetWeatherData().ToList());
         }
 
         [HttpPost]

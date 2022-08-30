@@ -20,7 +20,9 @@ namespace WWebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] IEnumerable<string>? sensorNames, [FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
+        public async Task<IActionResult> Get([FromQuery] IEnumerable<string>? sensorNames = null, 
+                                                [FromQuery] DateTime? startDate = null, 
+                                                [FromQuery] DateTime? endDate = null)
         {
             var sensors = SensorService.GetSensors();
             
@@ -55,7 +57,7 @@ namespace WWebApi.Controllers
                 });
             }
 
-            return Ok(await sensors.ToListAsync());
+            return Ok(sensors.ToList());
         }
 
         [HttpPost]
