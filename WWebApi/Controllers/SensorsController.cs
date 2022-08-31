@@ -43,7 +43,7 @@ namespace WWebApi.Controllers
                     Name = s.Name,
                     Country = s.Country,
                     City = s.City,
-                    WeatherData = s.WeatherData.Where(wd => wd.DateTime >= startDate! && wd.DateTime <= endDate!)
+                    WeatherData = s.WeatherData.Where(wd => wd.DateTime >= startDate! && wd.DateTime <= endDate!).OrderByDescending(wd => wd.DateTime).ToList()
                 });
             }
             else
@@ -58,7 +58,7 @@ namespace WWebApi.Controllers
                 });
             }
 
-            return Ok(sensors.ToList());
+            return Ok(sensors.OrderBy(s => s.Name).ToList());
         }
 
         [HttpPost]
