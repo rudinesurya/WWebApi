@@ -42,7 +42,7 @@ namespace WWebApi.Data
                 var newWeatherData = new WeatherData()
                 {
                     DateTime = DateTime.Now.AddDays(-i),
-                    Temperature = random.Next(0, 40),
+                    Temperature = random.Next(30, 40),
                     Humidity = random.Next(30, 60)
                 };
 
