@@ -20,6 +20,7 @@ namespace WWebApi.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(List<Sensor>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get([FromQuery] IEnumerable<string>? sensorNames = null, 
                                                 [FromQuery] DateTime? startDate = null, 
                                                 [FromQuery] DateTime? endDate = null)
@@ -61,6 +62,8 @@ namespace WWebApi.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(typeof(Sensor), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(Sensor), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Add([FromBody] Sensor sensor)
         {
             if (sensor.Id == default)

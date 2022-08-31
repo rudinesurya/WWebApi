@@ -20,12 +20,15 @@ namespace WWebApi.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(List<WeatherData>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get()
         {
             return Ok(WeatherDataService.GetWeatherData().ToList());
         }
 
         [HttpPost]
+        [ProducesResponseType(typeof(WeatherData), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(WeatherData), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Add([FromBody] WeatherData weatherData)
         {
             if (weatherData.Id == default)
