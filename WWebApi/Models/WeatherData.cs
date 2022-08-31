@@ -23,7 +23,5 @@ namespace WWebApi.Models
         // Navigation
         [Required]
         public Guid SensorId { get; set; }
-
-        public virtual Sensor? Sensor { get; set; }
     }
 }
